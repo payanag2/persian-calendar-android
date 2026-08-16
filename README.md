@@ -1,18 +1,7 @@
-# تقویم فارسی اندروید 🇮🇷
+# Persian Calendar Android
 
-یک تقویم فارسی (جلالی) مدرن برای Android با Kotlin و Jetpack Compose.
+تقویم فارسی (جلالی) برای اندروید با Kotlin و Jetpack Compose.
 
-## امکانات نسخه اولیه
+## Build
 
-- نمایش تاریخ شمسی
-- نمایش ماه و روزهای هفته به فارسی
-- رابط کاربری راست‌به‌چپ (RTL)
-- طراحی مدرن با Jetpack Compose
-- تبدیل تاریخ میلادی به شمسی
-- نمایش روز جاری
-
-## ساخت پروژه
-
-پروژه را با Android Studio باز کنید و Gradle Sync را انجام دهید.
-
-حداقل نسخه Android: API 24
+GitHub Actions به‌صورت خودکار APK را Build می‌کند و پس از موفقیت، آن را در بخش Releases منتشر می‌کند.
