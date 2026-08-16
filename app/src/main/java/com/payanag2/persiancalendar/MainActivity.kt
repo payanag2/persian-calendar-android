@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 class MainActivity : ComponentActivity() {
@@ -42,6 +42,15 @@ private fun PersianCalendarScreen() {
         "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"
     )
     val weekDays = listOf("شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه")
+    val weekDayIndex = when (today.dayOfWeek) {
+        DayOfWeek.SATURDAY -> 0
+        DayOfWeek.SUNDAY -> 1
+        DayOfWeek.MONDAY -> 2
+        DayOfWeek.TUESDAY -> 3
+        DayOfWeek.WEDNESDAY -> 4
+        DayOfWeek.THURSDAY -> 5
+        DayOfWeek.FRIDAY -> 6
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(20.dp),
@@ -57,7 +66,7 @@ private fun PersianCalendarScreen() {
             ) {
                 Text("امروز", style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "${jalali[2]}",
+                    jalali[2].toString(),
                     style = MaterialTheme.typography.displayLarge,
                     textAlign = TextAlign.Center
                 )
@@ -65,18 +74,18 @@ private fun PersianCalendarScreen() {
                     "${monthNames[jalali[1] - 1]} ${jalali[0]}",
                     style = MaterialTheme.typography.titleLarge
                 )
-                Text(weekDays[(today.dayOfWeek.value % 7)], style = MaterialTheme.typography.bodyLarge)
+                Text(weekDays[weekDayIndex], style = MaterialTheme.typography.bodyLarge)
             }
         }
         Text("تقویم جلالی — نسخه اولیه", style = MaterialTheme.typography.bodyMedium)
     }
 }
 
-// Conversion based on the standard 33-year Persian calendar algorithm.
+// Gregorian to Solar Hijri conversion.
 private fun gregorianToJalali(gy: Int, gm: Int, gd: Int): IntArray {
-    val gdm = intArrayOf(0,31,59,90,120,151,181,212,243,273,304,334)
+    val gdm = intArrayOf(0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334)
     var jy = if (gy > 1600) 979 else 0
-    var y = if (gy > 1600) gy - 1600 else gy - 621
+    val gyBase = if (gy > 1600) gy - 1600 else gy - 621
     val gy2 = if (gm > 2) gy + 1 else gy
     var days = 365 * gy + (gy2 + 3) / 4 - (gy2 + 99) / 100 + (gy2 + 399) / 400 - 80 + gd + gdm[gm - 1]
     jy += 33 * (days / 12053)
@@ -87,6 +96,7 @@ private fun gregorianToJalali(gy: Int, gm: Int, gd: Int): IntArray {
         jy += (days - 1) / 365
         days = (days - 1) % 365
     }
+    jy += gyBase - 979
     val jm = if (days < 186) 1 + days / 31 else 7 + (days - 186) / 30
     val jd = 1 + if (days < 186) days % 31 else (days - 186) % 30
     return intArrayOf(jy, jm, jd)
