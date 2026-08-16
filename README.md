@@ -2,6 +2,6 @@
 
 تقویم فارسی (جلالی) برای اندروید با Kotlin و Jetpack Compose.
 
-## Build
+GitHub Actions بعد از هر Push موفق، APK را Build و در Releases منتشر می‌کند.
 
-GitHub Actions به‌صورت خودکار APK را Build می‌کند و پس از موفقیت، آن را در بخش Releases منتشر می‌کند.
+android.useAndroidX=true
