@@ -9,7 +9,3 @@ allprojects {
         options.release.set(17)
     }
 }
-
-kotlin {
-    jvmToolchain(17)
-}
